@@ -1,0 +1,6 @@
+come funziona se voglio fare l' #include di libft ?
+
+fixare il fatto che se c'è solo '%' deve stamparlo comunque
+
+modificare ft_put... in modo tale che ritornino il numByteLetti e poi fare count += numByteLetti ... return (count)
+

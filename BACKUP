@@ -1,0 +1,35 @@
+v0
+int ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppure lasciare const char * ?
+{
+	va_list args;
+	char	**ss;
+	int		i;
+	
+	va_start(args, s);
+	ss = ft_split(s, '%');
+	if (!ss)
+		return (0); //?
+	printf("%s, %s\n", ss[0], ss[1]);
+	i = 0;
+	while (ss[i])
+	{
+		if (ss[i][0] == '%' || ss[i][0] == 'c')
+			ft_putchar_fd(va_arg(args, int), 0); //char?
+		else if (ss[i][0] == 's')
+			ft_putstr_fd(va_arg(args, char *), 0);
+		//else if (ss[i][0] == 'p')
+		else if (ss[i][0] == 'd')
+			ft_putnbr_fd(va_arg(args, int), 0);
+		else if (ss[i][0] == 'i')
+			ft_putnbr_fd(va_arg(args, int), 0); //?
+		//else if (ss[i][0] == 'u')
+		//else if (ss[i][0] == 'x')
+		//else if (ss[i][0] == 'X')
+		else
+			ft_putstr_fd(ss[i], 0);
+		
+		i++;
+	}
+	va_end(args);
+	return (1); //?
+}
