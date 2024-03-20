@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:41:46 by valerio           #+#    #+#             */
-/*   Updated: 2024/03/19 13:54:45 by valerio          ###   ########.fr       */
+/*   Updated: 2024/03/20 13:45:00 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,33 @@ static size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
+	return (1);
 }
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_putstr_fd(char *s, int fd)
 {
+	if (!s)
+	{
+		write(fd, "(null)", 6);
+		return (6);
+	}
 	write(fd, s, ft_strlen(s));
+	return (ft_strlen(s));
 }
 
-void	ft_putnbr_fd(int n, int fd)
+long	ft_putnbr_fd(long n, int fd)
 {
-	if (n == -2147483648)
-		ft_putstr_fd("-2147483648", fd);
-	else if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(-n, fd);
-	}
+	/*if (n == -2147483648)
+		return (ft_putstr_fd("-2147483648", fd));
+	else*/ if (n < 0)
+		return (ft_putchar_fd('-', fd) + ft_putnbr_fd(-n, fd));
 	else if (n >= 10)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putchar_fd(n % 10 + '0', fd);
-	}
+		return (ft_putnbr_fd(n / 10, fd) + ft_putchar_fd(n % 10 + '0', fd));
 	else
-		ft_putchar_fd(n + '0', fd);
+		return (ft_putchar_fd(n + '0', fd));
 }
 
 static int	ft_next_len(char const *str, char sep, int i)
@@ -138,4 +139,47 @@ char	*ft_strdup(const char *s)
 		return (NULL);
 	pt = ft_memcpy(pt, s, len + 1);
 	return (pt);
+}
+
+static void assign(unsigned long int n, char *buf, int i, char *base)
+{
+	/*if (n < 0)
+		assign(-n, buf, 1, base);
+	else*/ if (n == 0)
+	{
+		if (i == 1)
+			*buf++ = '-';
+		*buf = '\0';
+	}
+	else
+	{
+		//printf("%lld, %lld, %lld, %c\n", n, n/16, n%16, base[(n % 16)]);
+		*buf = base[(n % 16)];
+		assign(n / 16, buf + 1, i, base);
+	}
+}
+
+char	*to_hexa(unsigned long int n, char *buf, char *base)
+{
+	int		i;
+	int		len;
+	char	temp;
+
+	if (n == 0)
+	{
+		buf[0] = '0';
+		buf[1] = '\0';
+		return (buf);
+	}
+	assign(n, buf, 0, base);
+	i = 0;
+	len = ft_strlen(buf);
+	while (i < len / 2)
+	{
+		temp = buf[i];
+		buf[i] = buf[len - 1 - i];
+		buf[len - 1 - i] = temp;
+		i++;
+	}
+	return (buf);
 }

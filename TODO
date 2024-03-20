@@ -4,3 +4,4 @@ fixare il fatto che se c'è solo '%' deve stamparlo comunque
 
 modificare ft_put... in modo tale che ritornino il numByteLetti e poi fare count += numByteLetti ... return (count)
 
+per il to_hexa di %p usare unsigned long mentre per quello di %x %X usare long
