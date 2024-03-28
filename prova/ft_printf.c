@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 14:59:53 by valerio           #+#    #+#             */
-/*   Updated: 2024/03/28 17:59:47 by valerio          ###   ########.fr       */
+/*   Updated: 2024/03/28 17:12:35 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppu
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] != '%')
-			count += ft_putchar_fd(s[i], 1);
-		else if (s[++i])
+		if (s[i] == '%' && s[i + 1])
 		{
-			if (s[i] == 'c')
+			i++;
+			if (s[i] == '%' || s[i] == 'c')
 				count += ft_putchar_fd(va_arg(args, int), 1); //char?
 			else if (s[i] == 's')
 				count += ft_putstr_fd(va_arg(args, void *), 1);
@@ -79,23 +78,21 @@ int ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppu
 				count += ft_putstr_fd(buf, 1);
 				free(buf);
 			}
-			else if (s[i] == '%')
-				count += ft_putchar_fd('%', 1);
-			else
-				count += ft_putchar_fd(s[i], 1);
 		}
+		else
+			count += ft_putchar_fd(s[i], 1);		
 		i++;
 	}
 	va_end(args);
 	return (count); //?
 }
 
-/*
+
 int main()
 {
 	return (0);
 }
-*/
+
 
 
 
