@@ -6,44 +6,11 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 14:59:53 by valerio           #+#    #+#             */
-/*   Updated: 2024/04/02 13:19:42 by valerio          ###   ########.fr       */
+/*   Updated: 2024/04/02 14:53:27 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h> //provv
-#include <math.h> //provv
-
-static int	put_pointer(long mem, const char *base)
-{
-	char	*buf;
-	int		count;
-
-	count = 0;
-	if (mem == 0)
-		count += ft_putstr_fd("(nil)", 1);
-	else
-	{
-		buf = malloc(18);
-		buf = to_hexa(mem, buf,	base);
-		count += ft_putstr_fd("0x", 1) + ft_putstr_fd(buf, 1);
-		free(buf);
-	}
-	return (count);
-}
-
-static int	put_hexa(long mem, const char *base)
-{
-	char	*buf;
-	int		count;
-
-	count = 0;
-	buf = malloc(18); //'\0' più '-' in caso sia negativo il numero
-	buf = to_hexa(mem, buf, base);
-	count += ft_putstr_fd(buf, 1);
-	free(buf);
-	return (count);
-}
 
 static int	aux(va_list *args, char c)
 {
@@ -51,7 +18,7 @@ static int	aux(va_list *args, char c)
 
 	count = 0;
 	if (c == 'c')
-		count += ft_putchar_fd(va_arg(*args, int), 1); //char?
+		count += ft_putchar_fd(va_arg(*args, int), 1);
 	else if (c == 's')
 		count += ft_putstr_fd(va_arg(*args, void *), 1);
 	else if (c == 'p')
@@ -59,7 +26,7 @@ static int	aux(va_list *args, char c)
 	else if (c == 'd' || c == 'i')
 		count += ft_putnbr_fd(c, va_arg(*args, int), 1);
 	else if (c == 'u')
-		count += ft_putnbr_fd(c, va_arg(*args, long), 1);
+		count += ft_putnbr_fd(c, va_arg(*args, int), 1); //se gli avessi passato long faceva in automatico il casting a unsigned e non c'era bisogno di if(c=='u') in ft_putnbr(non ho capito perché)
 	else if (c == 'x')
 		count += put_hexa(va_arg(*args, long), "0123456789abcdef");
 	else if (c == 'X')
@@ -71,14 +38,12 @@ static int	aux(va_list *args, char c)
 	return (count);
 }
 
-
-
-int ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppure lasciare const char * ?
+int	ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppure lasciare const char * ?
 {
-	va_list args;
+	va_list	args;
 	int		count; //va bene int?
 	int		i;
-	
+
 	va_start(args, s);
 	count = 0;
 	i = 0;
@@ -91,19 +56,13 @@ int ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppu
 		i++;
 	}
 	va_end(args);
-	return (count); //?
+	return (count);
 }
 
 /*
 int main()
 {
+	printf("%ld", ft_pow1(2, 3));
 	return (0);
 }
 */
-
-
-
-
-
-
-

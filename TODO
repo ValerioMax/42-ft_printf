@@ -11,3 +11,6 @@ per %u magari non fare += ft_pow() in ft_putnumber ma creare una funzione a part
 			}
 			count += ft_putnbr_fd(s[i], mem, 1);
 		}
+
+succede una cosa strana col %u: funziona ma non capisco perché. è come se va_arg(*args, long) castasse ad unsigned
+-->fixato mettendo va_arg(*args, int), non capisco cosa succedesse prima però
