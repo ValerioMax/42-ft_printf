@@ -1,7 +1,13 @@
 come funziona se voglio fare l' #include di libft ?
 
-fixare il fatto che se c'è solo '%' deve stamparlo comunque
-
-modificare ft_put... in modo tale che ritornino il numByteLetti e poi fare count += numByteLetti ... return (count)
-
-per il to_hexa di %p usare unsigned long mentre per quello di %x %X usare long
+per %u magari non fare += ft_pow() in ft_putnumber ma creare una funzione a parte:
+		else if (s[i] == 'u')
+		{
+			//questo da mettere in un aux del tipo "put_unsigned()"
+			mem = va_arg(args, long);
+			if (mem < 0)
+			{
+				mem += pow(2, 32) - 1;
+			}
+			count += ft_putnbr_fd(s[i], mem, 1);
+		}
