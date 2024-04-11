@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vdessena <vdessena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 14:59:53 by valerio           #+#    #+#             */
-/*   Updated: 2024/04/02 14:53:27 by valerio          ###   ########.fr       */
+/*   Updated: 2024/04/11 20:36:14 by vdessena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static int	aux(va_list *args, char c)
 	else if (c == 'u')
 		count += ft_putnbr_fd(c, va_arg(*args, int), 1); //se gli avessi passato long faceva in automatico il casting a unsigned e non c'era bisogno di if(c=='u') in ft_putnbr(non ho capito perché)
 	else if (c == 'x')
-		count += put_hexa(va_arg(*args, long), "0123456789abcdef");
+		count += put_hexa(va_arg(*args, unsigned int), "0123456789abcdef");
 	else if (c == 'X')
-		count += put_hexa(va_arg(*args, long), "0123456789ABCDEF");
+		count += put_hexa(va_arg(*args, unsigned int), "0123456789ABCDEF");
 	else if (c == '%')
 		count += ft_putchar_fd('%', 1);
 	else
@@ -41,7 +41,7 @@ static int	aux(va_list *args, char c)
 int	ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppure lasciare const char * ?
 {
 	va_list	args;
-	int		count; //va bene int?
+	int		count;
 	int		i;
 
 	va_start(args, s);
@@ -60,9 +60,21 @@ int	ft_printf(const char *s, ...) // devo mettere const char *nomeParametro oppu
 }
 
 /*
+#include <limits.h>
 int main()
 {
-	printf("%ld", ft_pow1(2, 3));
-	return (0);
+	
+	printf(" %x %x %x %x %x %x %x\n", INT_MAX, INT_MIN, LONG_MAX, LONG_MIN, ULONG_MAX, 0, -42);
+	ft_printf(" %x %x %x %x %x %x %x\n", INT_MAX, INT_MIN, LONG_MAX, LONG_MIN, ULONG_MAX, 0, -42);
+	//return (0);
+	
+	
+
+	printf(" %p %p \n", LONG_MIN, LONG_MAX);
+	ft_printf(" %p %p \n\n", LONG_MIN, LONG_MAX);
+	printf(" %p %p \n", ULONG_MAX, -ULONG_MAX);
+	ft_printf(" %p %p \n", ULONG_MAX, -ULONG_MAX);
+	
+	return 0;
 }
 */
